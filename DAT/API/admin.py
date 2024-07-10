@@ -1,18 +1,19 @@
 from django.contrib import admin
-from .models import Denuncia, Advogado
+from .models import Advogado, RegistroDeOcorrencia
 
 # Register your models here.
 #admin.site.register(Denuncia)
-class DenunciaAdmin(admin.ModelAdmin):
-    readonly_fields = ('id_denuncia',)  # Define 'id' como campo de somente leitura
-    list_display = ('id_denuncia', 'tipoDeOcorrencia', 'denuncia', 'dataDaDenuncia')  # Certifique-se de incluir 'id' aqui se quiser exibi-lo na lista
+@admin.register(RegistroDeOcorrencia)
+class RegistroDeOcorrenciaAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)  # Define 'id' como campo de somente leitura
+    list_display = ('id', 'tipoDeOcorrencia', 'registroDeCaso', 'dataDaDenuncia', 'status', )  # Certifique-se de incluir 'id' aqui se quiser exibi-lo na lista
 
     # Define a ordem dos campos no formulário de administração
-    list_filter = ('tipoDeOcorrencia',)
+    list_filter = ('tipoDeOcorrencia','status',)
     fieldsets = ( (None, {
-            'fields': ('id_denuncia','tipoDeOcorrencia','denuncia', 'dataDaDenuncia')}),
+            'fields': ('id','tipoDeOcorrencia','registroDeCaso', 'dataDaDenuncia', 'status')}),
     )
 
-admin.site.register(Denuncia, DenunciaAdmin)
-
-admin.site.register(Advogado)
+@admin.register(Advogado)
+class AdvogadoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'sobrenome', 'OAB', 'email', 'display_registros_de_ocorrencia')
